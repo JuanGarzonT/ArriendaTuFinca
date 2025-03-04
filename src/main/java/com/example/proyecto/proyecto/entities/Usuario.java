@@ -4,20 +4,16 @@ package com.example.proyecto.proyecto.entities;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import jakarta.annotation.Generated;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -29,12 +25,10 @@ import lombok.Setter;
 public class Usuario {
 
     @Id
-    @Column(name = "id_usuario")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUsuario;
+    private Long id_Usuario;
     private String nombre_Usuario;
     private String direccion;
     private Integer edad;
-
     
 }

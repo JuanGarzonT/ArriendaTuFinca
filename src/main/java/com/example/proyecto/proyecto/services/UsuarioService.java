@@ -14,18 +14,12 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    /**
-     * consultar el usuario
-     * @return
-     */
+
     public List<Usuario> consultarUsuarios() {
         return (List<Usuario>) usuarioRepository.findAll();
     }
 
-    /**
-     * @param usuario
-     * @return el registro del usuario
-     */
+
     public Usuario registrarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }

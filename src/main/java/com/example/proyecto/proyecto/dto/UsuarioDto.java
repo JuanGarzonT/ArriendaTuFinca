@@ -15,13 +15,5 @@ public class UsuarioDto {
     private String direccion;
     private Integer edad;
 
-    @Override
-    public String toString() {
-        return "{" +
-            ", nombre_Usuario='" + getNombre_Usuario() + "'" +
-            ", direccion='" + getDireccion() + "'" +
-            ", edad='" + getEdad() + "'" +
-            "}";
-    }
 
 }
