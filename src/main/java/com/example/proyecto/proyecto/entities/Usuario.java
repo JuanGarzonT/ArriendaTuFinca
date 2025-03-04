@@ -30,5 +30,6 @@ public class Usuario {
     private String nombre_Usuario;
     private String direccion;
     private Integer edad;
+    private Integer status = 0;
     
 }
