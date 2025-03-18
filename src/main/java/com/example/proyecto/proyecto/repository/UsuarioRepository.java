@@ -1,9 +1,19 @@
 package com.example.proyecto.proyecto.repository;
 
-import org.springframework.data.repository.CrudRepository;
-
 import com.example.proyecto.proyecto.entities.Usuario;
+import com.example.proyecto.proyecto.entities.Usuario.TipoUsuario;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
+@Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
-
+    
+    Optional<Usuario> findByEmail(String email);
+    
+    boolean existsByEmail(String email);
+    
+    List<Usuario> findByTipoUsuario(TipoUsuario tipoUsuario);
 }

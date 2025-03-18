@@ -3,40 +3,68 @@ package com.example.proyecto.proyecto.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.proyecto.proyecto.dto.UsuarioDto;
-import com.example.proyecto.proyecto.entities.Usuario;
+import com.example.proyecto.proyecto.dto.input.usuario.UsuarioCreateDTO;
+import com.example.proyecto.proyecto.dto.input.usuario.UsuarioUpdateDTO;
+import com.example.proyecto.proyecto.dto.output.usuario.UsuarioDTO;
+import com.example.proyecto.proyecto.dto.output.usuario.UsuarioDetailDTO;
+import com.example.proyecto.proyecto.entities.Usuario.TipoUsuario;
 import com.example.proyecto.proyecto.services.UsuarioService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PostMapping;
-
-
 
 @RestController
-@RequestMapping("controllers")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
-
-    @GetMapping("/listarUsuarios")
-    public List<Usuario> consultarUsuarios() {
-        return usuarioService.consultarUsuarios();
+    @GetMapping("/listar")
+    public List<UsuarioDTO> getAllUsuarios() {
+        return usuarioService.getAllUsuarios();
     }
 
-    @PostMapping("registrarUsuario")
-    public Usuario registrarUsuario(@RequestBody UsuarioDto usuarioJson) {
+    @GetMapping("/buscar/{id}")
+    public UsuarioDTO getUsuarioById(@PathVariable Long id) {
+        return usuarioService.getUsuarioById(id);
+    }
 
-        Usuario usuario = new Usuario();
+    @GetMapping("/buscarPorEmail/{email}")
+    public UsuarioDTO getUsuarioByEmail(@PathVariable String email) {
+        return usuarioService.getUsuarioByEmail(email);
+    }
 
-        usuario.setNombre_Usuario(usuarioJson.getNombre_Usuario());
-        usuario.setDireccion(usuarioJson.getDireccion());
-        usuario.setEdad(usuarioJson.getEdad());
+    @GetMapping("/detalle/{id}")
+    public UsuarioDetailDTO getUsuarioDetalleById(@PathVariable Long id) {
+        return usuarioService.getUsuarioDetailById(id);
+    }
 
-        return usuarioService.registrarUsuario(usuario);
+    @GetMapping("/buscarPorTipo/{tipoUsuario}")
+    public List<UsuarioDTO> getUsuariosByTipo(@PathVariable TipoUsuario tipoUsuario) {
+        return usuarioService.getUsuariosByTipo(tipoUsuario);
+    }
+
+    @PostMapping("/registrar")
+    public UsuarioDTO createUsuario(@RequestBody UsuarioCreateDTO createUsuarioDTO) {
+        return usuarioService.createUsuario(createUsuarioDTO);
+    }
+
+    @PutMapping("/actualizar/{id}")
+    public UsuarioDTO updateUsuario(
+            @PathVariable Long id,
+            @RequestBody UsuarioUpdateDTO updateUsuarioDTO) {
+        return usuarioService.updateUsuario(id, updateUsuarioDTO);
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public void deleteUsuario(@PathVariable Long id) {
+        usuarioService.deleteUsuario(id);
     }
 }

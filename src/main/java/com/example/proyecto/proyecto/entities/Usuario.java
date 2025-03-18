@@ -1,35 +1,54 @@
 package com.example.proyecto.proyecto.entities;
 
-
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import java.util.List;
 
 @Entity
-@AllArgsConstructor
+@Table(name = "usuarios")
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@Where(clause = "status = 0")
-@SQLDelete( sql = "UPTADE usuario SET status = 1 WHERE id_usuario = ?")
-
-
+@AllArgsConstructor
 public class Usuario {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_Usuario;
-    private String nombre_Usuario;
-    private String direccion;
-    private Integer edad;
-    private Integer status = 0;
+    private Long id;
     
+    @Column(nullable = false)
+    private String nombre;
+    
+    @Column(nullable = false, unique = true)
+    private String email;
+    
+    @Column(nullable = false)
+    private String password;
+    
+    @Column(nullable = false)
+    private String telefono;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private TipoUsuario tipoUsuario;
+    
+    @OneToMany(mappedBy = "arrendatario", cascade = CascadeType.ALL)
+    private List<Propiedad> propiedades;
+    
+    @OneToMany(mappedBy = "arrendador")
+    private List<Solicitud> solicitudesRealizadas;
+    
+    @OneToMany(mappedBy = "arrendatario")
+    private List<Solicitud> solicitudesRecibidas;
+    
+    @OneToMany(mappedBy = "usuario")
+    private List<Calificacion> calificacionesRealizadas;
+    
+    // Enum para el tipo de usuario
+    public enum TipoUsuario {
+        ARRENDATARIO, // El que pone en arriendo propiedades
+        ARRENDADOR    // El que arrienda propiedades
+    }
 }
