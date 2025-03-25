@@ -20,7 +20,7 @@ spec:
           image: localhost:5000/proyecto:latest
           env:
             - name: proyectoweb
-              value: jdbc:mysql://10.43.103.118:3306/proyectoweb
+              value: jdbc:mysql://localhost:3306/proyectoweb
             - name: SPRING_DATASOURCE_USERNAME
               value: root
             - name: SPRING_DATASOURCE_PASSWORD
