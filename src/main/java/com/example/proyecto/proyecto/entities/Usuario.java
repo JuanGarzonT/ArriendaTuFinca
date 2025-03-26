@@ -33,6 +33,9 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoUsuario tipoUsuario;
+
+    @Column(nullable = false)
+    private Boolean activo = true;
     
     @OneToMany(mappedBy = "arrendatario", cascade = CascadeType.ALL)
     private List<Propiedad> propiedades;

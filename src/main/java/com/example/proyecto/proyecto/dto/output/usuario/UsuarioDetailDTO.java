@@ -18,6 +18,7 @@ public class UsuarioDetailDTO {
     private String email;
     private String telefono;
     private TipoUsuario tipoUsuario;
+    private Boolean activo;
     private List<PropiedadSimpleDTO> propiedades;
     private List<SolicitudSimpleDTO> solicitudesRealizadas;
     private List<SolicitudSimpleDTO> solicitudesRecibidas;

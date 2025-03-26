@@ -39,28 +39,29 @@ public class UsuarioService {
 
     @Transactional(readOnly = true)
     public List<UsuarioDTO> getAllUsuarios() {
-        return StreamSupport.stream(usuarioRepository.findAll().spliterator(), false)
+        return usuarioRepository.findByActivoTrue()
+                .stream()
                 .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public UsuarioDTO getUsuarioById(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
+        Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
         return modelMapper.map(usuario, UsuarioDTO.class);
     }
 
     @Transactional(readOnly = true)
     public UsuarioDTO getUsuarioByEmail(String email) {
-        Usuario usuario = usuarioRepository.findByEmail(email)
+        Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(email)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
         return modelMapper.map(usuario, UsuarioDTO.class);
     }
 
     @Transactional(readOnly = true)
     public UsuarioDetailDTO getUsuarioDetailById(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
+        Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
         
         List<Propiedad> propiedades = propiedadRepository.findByArrendatario(usuario);
@@ -86,11 +87,12 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDTO createUsuario(UsuarioCreateDTO createUsuarioDTO) {
-        if (usuarioRepository.existsByEmail(createUsuarioDTO.getEmail())) {
+        if (usuarioRepository.existsByEmailAndActivoTrue(createUsuarioDTO.getEmail())) {
             throw new RuntimeException("Ya existe un usuario con el email: " + createUsuarioDTO.getEmail());
         }
         
         Usuario usuario = modelMapper.map(createUsuarioDTO, Usuario.class);
+        usuario.setActivo(true);
         // La contraseña se manejará más adelante
         
         Usuario savedUsuario = usuarioRepository.save(usuario);
@@ -99,7 +101,7 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioDTO updateUsuario(Long id, UsuarioUpdateDTO updateUsuarioDTO) {
-        Usuario usuario = usuarioRepository.findById(id)
+        Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
         
         if (updateUsuarioDTO.getNombre() != null) {
@@ -117,16 +119,31 @@ public class UsuarioService {
     }
 
     @Transactional
-    public void deleteUsuario(Long id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuario no encontrado con ID: " + id);
+    public void softDeleteUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        
+        usuario.setActivo(false);
+        usuarioRepository.save(usuario);
+    }
+    
+    @Transactional
+    public UsuarioDTO reactivarUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        
+        if (usuario.getActivo()) {
+            throw new RuntimeException("El usuario ya está activo");
         }
-        usuarioRepository.deleteById(id);
+        
+        usuario.setActivo(true);
+        Usuario reactivatedUsuario = usuarioRepository.save(usuario);
+        return modelMapper.map(reactivatedUsuario, UsuarioDTO.class);
     }
 
     @Transactional(readOnly = true)
     public List<UsuarioDTO> getUsuariosByTipo(TipoUsuario tipoUsuario) {
-        return usuarioRepository.findByTipoUsuario(tipoUsuario).stream()
+        return usuarioRepository.findByTipoUsuarioAndActivoTrue(tipoUsuario).stream()
                 .map(usuario -> modelMapper.map(usuario, UsuarioDTO.class))
                 .collect(Collectors.toList());
     }

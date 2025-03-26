@@ -3,6 +3,7 @@ package com.example.proyecto.proyecto.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,7 +65,13 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public void deleteUsuario(@PathVariable Long id) {
-        usuarioService.deleteUsuario(id);
+    public ResponseEntity<Void> softDeleteUsuario(@PathVariable Long id) {
+        usuarioService.softDeleteUsuario(id);
+        return ResponseEntity.ok().build();
+    }
+    
+    @PutMapping("/reactivar/{id}")
+    public UsuarioDTO reactivarUsuario(@PathVariable Long id) {
+        return usuarioService.reactivarUsuario(id);
     }
 }
