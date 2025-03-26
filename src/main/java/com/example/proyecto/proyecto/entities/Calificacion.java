@@ -38,6 +38,9 @@ public class Calificacion {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoCalificacion tipoCalificacion;
+
+    @Column(nullable = false)
+    private Boolean activo = true;
     
     // Enum para el tipo de calificación
     public enum TipoCalificacion {

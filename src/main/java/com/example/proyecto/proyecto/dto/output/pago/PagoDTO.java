@@ -20,4 +20,5 @@ public class PagoDTO {
     private MetodoPago metodoPago;
     private String referenciaPago;
     private EstadoPago estadoPago;
+    private Boolean activo;
 }

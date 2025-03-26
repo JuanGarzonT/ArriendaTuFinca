@@ -33,6 +33,9 @@ public class Propiedad {
     
     @Column(nullable = false)
     private boolean disponible;
+
+    @Column(nullable = false)
+    private Boolean activo = true;
     
     // Información adicional de la propiedad
     private int capacidad;

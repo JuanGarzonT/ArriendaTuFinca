@@ -13,11 +13,13 @@ import java.util.Optional;
 @Repository
 public interface PagoRepository extends CrudRepository<Pago, Long> {
     
-    Optional<Pago> findBySolicitud(Solicitud solicitud);
+    Optional<Pago> findBySolicitudAndActivoTrue(Solicitud solicitud);
     
-    List<Pago> findByEstadoPago(EstadoPago estadoPago);
+    List<Pago> findByEstadoPagoAndActivoTrue(EstadoPago estadoPago);
     
-    List<Pago> findByFechaPagoBetween(LocalDateTime inicio, LocalDateTime fin);
+    List<Pago> findByFechaPagoBetweenAndActivoTrue(LocalDateTime inicio, LocalDateTime fin);
     
-    boolean existsBySolicitud(Solicitud solicitud);
+    boolean existsBySolicitudAndActivoTrue(Solicitud solicitud);
+    
+    Optional<Pago> findByIdAndActivoTrue(Long id);
 }

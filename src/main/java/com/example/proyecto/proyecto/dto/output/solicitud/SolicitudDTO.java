@@ -25,4 +25,5 @@ public class SolicitudDTO {
     private EstadoSolicitud estado;
     private String comentarios;
     private PagoDTO pago;
+    private Boolean activo;
 }

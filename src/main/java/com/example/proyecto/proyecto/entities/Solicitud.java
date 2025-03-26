@@ -49,6 +49,9 @@ public class Solicitud {
     
     @OneToOne(mappedBy = "solicitud", cascade = CascadeType.ALL)
     private Pago pago;
+
+    @Column(nullable = false)
+    private Boolean activo = true;
     
     // Enum para el estado de la solicitud
     public enum EstadoSolicitud {

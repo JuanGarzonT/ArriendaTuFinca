@@ -20,6 +20,7 @@ public class PropiedadDetailDTO {
     private String ubicacion;
     private BigDecimal precioPorDia;
     private boolean disponible;
+    private Boolean activo;
     private int capacidad;
     private String caracteristicas;
     private String direccion;

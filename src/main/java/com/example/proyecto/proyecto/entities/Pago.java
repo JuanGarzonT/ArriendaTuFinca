@@ -40,6 +40,9 @@ public class Pago {
     @Column(nullable = false)
     private EstadoPago estadoPago;
     
+    @Column(nullable = false)
+    private Boolean activo = true;
+    
     // Enum para el método de pago
     public enum MetodoPago {
         TARJETA_CREDITO,

@@ -20,4 +20,5 @@ public class CalificacionDTO {
     private String comentario;
     private LocalDateTime fechaCalificacion;
     private TipoCalificacion tipoCalificacion;
+    private Boolean activo;
 }

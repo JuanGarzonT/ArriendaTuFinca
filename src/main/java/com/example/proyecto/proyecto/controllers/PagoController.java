@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +28,7 @@ public class PagoController {
     @Autowired
     private PagoService pagoService;
 
-    @GetMapping("/listar")
+     @GetMapping("/listar")
     public List<PagoDTO> getAllPagos() {
         return pagoService.getAllPagos();
     }
@@ -67,7 +68,13 @@ public class PagoController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public void deletePago(@PathVariable Long id) {
-        pagoService.deletePago(id);
+    public ResponseEntity<Void> softDeletePago(@PathVariable Long id) {
+        pagoService.softDeletePago(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/reactivar/{id}")
+    public PagoDTO reactivarPago(@PathVariable Long id) {
+        return pagoService.reactivarPago(id);
     }
 }

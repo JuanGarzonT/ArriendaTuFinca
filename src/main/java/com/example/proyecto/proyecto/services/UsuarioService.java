@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class UsuarioService {
@@ -118,6 +117,7 @@ public class UsuarioService {
         return modelMapper.map(updatedUsuario, UsuarioDTO.class);
     }
 
+    
     @Transactional
     public void softDeleteUsuario(Long id) {
         Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
