@@ -63,7 +63,7 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
         
-        List<Propiedad> propiedades = propiedadRepository.findByArrendatario(usuario);
+        List<Propiedad> propiedades = propiedadRepository.findByArrendatarioAndActivoTrue(usuario);
         List<Solicitud> solicitudesRealizadas = solicitudRepository.findByArrendador(usuario);
         List<Solicitud> solicitudesRecibidas = solicitudRepository.findByArrendatario(usuario);
         

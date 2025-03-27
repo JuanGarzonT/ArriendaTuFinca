@@ -8,21 +8,26 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PropiedadRepository extends CrudRepository<Propiedad, Long> {
+
+    List<Propiedad> findAllByActivoTrue();
     
-    List<Propiedad> findByArrendatario(Usuario arrendatario);
+    Optional<Propiedad> findByIdAndActivoTrue(Long id);
     
-    List<Propiedad> findByDisponible(boolean disponible);
+    List<Propiedad> findByArrendatarioAndActivoTrue(Usuario arrendatario);
     
-    List<Propiedad> findByCiudad(String ciudad);
+    List<Propiedad> findByDisponibleAndActivoTrue(boolean disponible);
     
-    List<Propiedad> findByDepartamento(String departamento);
+    List<Propiedad> findByCiudadAndActivoTrue(String ciudad);
+    
+    List<Propiedad> findByDepartamentoAndActivoTrue(String departamento);
     
     @Query("SELECT p FROM Propiedad p WHERE p.ubicacion LIKE %:ubicacion%")
-    List<Propiedad> buscarPorUbicacion(@Param("ubicacion") String ubicacion);
+    List<Propiedad> buscarPorUbicacionAndActivoTrue(@Param("ubicacion") String ubicacion);
     
     @Query("SELECT p FROM Propiedad p WHERE p.disponible = true AND p.capacidad >= :capacidad")
-    List<Propiedad> buscarDisponiblesPorCapacidad(@Param("capacidad") int capacidad);
+    List<Propiedad> buscarDisponiblesPorCapacidadAndActivoTrue(@Param("capacidad") int capacidad);
 }
