@@ -64,8 +64,8 @@ public class UsuarioService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
         
         List<Propiedad> propiedades = propiedadRepository.findByArrendatarioAndActivoTrue(usuario);
-        List<Solicitud> solicitudesRealizadas = solicitudRepository.findByArrendador(usuario);
-        List<Solicitud> solicitudesRecibidas = solicitudRepository.findByArrendatario(usuario);
+        List<Solicitud> solicitudesRealizadas = solicitudRepository.findByArrendadorAndActivoTrue(usuario);
+        List<Solicitud> solicitudesRecibidas = solicitudRepository.findByArrendatarioAndActivoTrue(usuario);
         
         UsuarioDetailDTO detailDTO = modelMapper.map(usuario, UsuarioDetailDTO.class);
         

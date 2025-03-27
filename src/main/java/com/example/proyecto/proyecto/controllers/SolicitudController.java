@@ -5,15 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.proyecto.proyecto.dto.input.solicitud.SolicitudCreateDTO;
 import com.example.proyecto.proyecto.dto.input.solicitud.SolicitudUpdateDTO;
@@ -93,7 +86,13 @@ public class SolicitudController {
     }
 
     @DeleteMapping("/eliminar/{id}")
-    public void deleteSolicitud(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteSolicitud(@PathVariable Long id) {
         solicitudService.deleteSolicitud(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/reactivar/{id}")
+    public SolicitudDTO reactivarSolicitud(@PathVariable Long id) {
+        return solicitudService.reactivarSolicitud(id);
     }
 }
