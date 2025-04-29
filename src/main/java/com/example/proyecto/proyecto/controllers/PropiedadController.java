@@ -45,7 +45,7 @@ public class PropiedadController {
     }
 
     @GetMapping("/buscarPorArrendatario/{arrendatarioId}")
-    public List<PropiedadSimpleDTO> getPropiedadesByArrendatario(
+    public List<PropiedadDetailDTO> getPropiedadesByArrendatario(
             @PathVariable Long arrendatarioId) {
         return propiedadService.getPropiedadesByArrendatarioId(arrendatarioId);
     }

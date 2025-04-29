@@ -33,6 +33,9 @@ public class Propiedad {
     
     @Column(nullable = false)
     private boolean disponible;
+    
+   @Column(nullable = true)
+   private String imagen; 
 
     @Column(nullable = false)
     private Boolean activo = true;

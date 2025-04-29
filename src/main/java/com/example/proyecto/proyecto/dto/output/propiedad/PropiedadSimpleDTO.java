@@ -12,7 +12,9 @@ import java.math.BigDecimal;
 public class PropiedadSimpleDTO {
     private Long id;
     private String nombre;
+    private String descripcion;
     private String ubicacion;
     private BigDecimal precioPorDia;
     private boolean disponible;
+    private String imagen;
 }

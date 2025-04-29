@@ -24,4 +24,5 @@ public class PropiedadDTO {
     private String departamento;
     private UsuarioDTO arrendatario;
     private Double calificacionPromedio;
+    private String imagen;
 }

@@ -20,4 +20,5 @@ public class PropiedadCreateDTO {
     private String direccion;
     private String ciudad;
     private String departamento;
+    private String imagen;
 }

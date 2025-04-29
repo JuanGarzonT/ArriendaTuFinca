@@ -30,4 +30,5 @@ public class PropiedadDetailDTO {
     private Double calificacionPromedio;
     private List<SolicitudSimpleDTO> solicitudes;
     private List<CalificacionDTO> calificaciones;
+    private String imagen;
 }

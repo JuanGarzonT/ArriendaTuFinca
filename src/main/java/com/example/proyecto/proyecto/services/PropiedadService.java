@@ -75,12 +75,12 @@ public class PropiedadService {
     }
 
     @Transactional(readOnly = true)
-    public List<PropiedadSimpleDTO> getPropiedadesByArrendatarioId(Long arrendatarioId) {
+    public List<PropiedadDetailDTO> getPropiedadesByArrendatarioId(Long arrendatarioId) {
         Usuario arrendatario = usuarioRepository.findById(arrendatarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + arrendatarioId));
 
         return propiedadRepository.findByArrendatarioAndActivoTrue(arrendatario).stream()
-                .map(propiedad -> modelMapper.map(propiedad, PropiedadSimpleDTO.class))
+                .map(propiedad -> modelMapper.map(propiedad, PropiedadDetailDTO.class))
                 .collect(Collectors.toList());
     }
 
