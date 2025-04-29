@@ -7,7 +7,10 @@ import com.example.proyecto.proyecto.dto.output.propiedad.PropiedadDTO;
 import com.example.proyecto.proyecto.dto.output.propiedad.PropiedadDetailDTO;
 import com.example.proyecto.proyecto.dto.output.propiedad.PropiedadSimpleDTO;
 import com.example.proyecto.proyecto.dto.output.solicitud.SolicitudSimpleDTO;
+import com.example.proyecto.proyecto.dto.output.usuario.UsuarioDTO;
+import com.example.proyecto.proyecto.entities.Calificacion;
 import com.example.proyecto.proyecto.entities.Propiedad;
+import com.example.proyecto.proyecto.entities.Solicitud;
 import com.example.proyecto.proyecto.entities.Usuario;
 import com.example.proyecto.proyecto.repository.CalificacionRepository;
 import com.example.proyecto.proyecto.repository.PropiedadRepository;
@@ -16,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -79,9 +83,113 @@ public class PropiedadService {
         Usuario arrendatario = usuarioRepository.findById(arrendatarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + arrendatarioId));
 
-        return propiedadRepository.findByArrendatarioAndActivoTrue(arrendatario).stream()
-                .map(propiedad -> modelMapper.map(propiedad, PropiedadDetailDTO.class))
-                .collect(Collectors.toList());
+        List<Propiedad> propiedades = propiedadRepository.findByArrendatarioAndActivoTrue(arrendatario);
+        List<PropiedadDetailDTO> propiedadDTOs = new ArrayList<>();
+
+        for (Propiedad propiedad : propiedades) {
+            // Creamos un nuevo DTO y mapeamos propiedades básicas manualmente
+            PropiedadDetailDTO dto = new PropiedadDetailDTO();
+            
+            // Propiedades simples
+            dto.setId(propiedad.getId());
+            dto.setNombre(propiedad.getNombre());
+            dto.setDescripcion(propiedad.getDescripcion());
+            dto.setUbicacion(propiedad.getUbicacion());
+            dto.setPrecioPorDia(propiedad.getPrecioPorDia());
+            dto.setDisponible(propiedad.isDisponible());
+            dto.setActivo(propiedad.getActivo());
+            dto.setCapacidad(propiedad.getCapacidad());
+            dto.setCaracteristicas(propiedad.getCaracteristicas());
+            dto.setDireccion(propiedad.getDireccion());
+            dto.setCiudad(propiedad.getCiudad());
+            dto.setDepartamento(propiedad.getDepartamento());
+            
+            // Mapear manualmente el arrendatario
+            UsuarioDTO arrendatarioDTO = new UsuarioDTO();
+            arrendatarioDTO.setId(propiedad.getArrendatario().getId());
+            arrendatarioDTO.setNombre(propiedad.getArrendatario().getNombre());
+            arrendatarioDTO.setEmail(propiedad.getArrendatario().getEmail());
+            arrendatarioDTO.setTelefono(propiedad.getArrendatario().getTelefono());
+            arrendatarioDTO.setTipoUsuario(propiedad.getArrendatario().getTipoUsuario());
+            // No incluimos la contraseña por seguridad
+            dto.setArrendatario(arrendatarioDTO);
+            
+            // Inicializar listas vacías
+            dto.setSolicitudes(new ArrayList<>());
+            dto.setCalificaciones(new ArrayList<>());
+            
+            // Mapear las solicitudes si existen
+            if (propiedad.getSolicitudes() != null && !propiedad.getSolicitudes().isEmpty()) {
+                List<SolicitudSimpleDTO> solicitudesDTO = new ArrayList<>();
+                
+                for (Solicitud solicitud : propiedad.getSolicitudes()) {
+                    SolicitudSimpleDTO solicitudDTO = new SolicitudSimpleDTO();
+                    solicitudDTO.setId(solicitud.getId());
+                    solicitudDTO.setPropiedadNombre(propiedad.getNombre());
+                    solicitudDTO.setArrendadorNombre(solicitud.getArrendador().getNombre());
+                    solicitudDTO.setArrendatarioNombre(solicitud.getArrendatario().getNombre());
+                    solicitudDTO.setFechaInicio(solicitud.getFechaInicio());
+                    solicitudDTO.setFechaFin(solicitud.getFechaFin());
+                    solicitudDTO.setEstado(solicitud.getEstado());
+                    
+                    solicitudesDTO.add(solicitudDTO);
+                }
+                
+                dto.setSolicitudes(solicitudesDTO);
+            }
+            
+            // Mapear las calificaciones y calcular promedio
+            if (propiedad.getCalificaciones() != null && !propiedad.getCalificaciones().isEmpty()) {
+                List<CalificacionDTO> calificacionesDTO = new ArrayList<>();
+                
+                double sumaPuntuaciones = 0;
+                int contador = 0;
+                
+                for (Calificacion calificacion : propiedad.getCalificaciones()) {
+                    // Solo incluimos calificaciones activas
+                    if (calificacion.getActivo()) {
+                        CalificacionDTO calificacionDTO = new CalificacionDTO();
+                        calificacionDTO.setId(calificacion.getId());
+                        calificacionDTO.setComentario(calificacion.getComentario());
+                        calificacionDTO.setPuntuacion(calificacion.getPuntuacion());
+                        calificacionDTO.setFechaCalificacion(calificacion.getFechaCalificacion());
+                        calificacionDTO.setTipoCalificacion(calificacion.getTipoCalificacion());
+                        calificacionDTO.setActivo(calificacion.getActivo());
+                        
+                        // Mapear el usuario
+                        UsuarioDTO usuarioDTO = new UsuarioDTO();
+                        usuarioDTO.setId(calificacion.getUsuario().getId());
+                        usuarioDTO.setNombre(calificacion.getUsuario().getNombre());
+                        usuarioDTO.setEmail(calificacion.getUsuario().getEmail());
+                        usuarioDTO.setTipoUsuario(calificacion.getUsuario().getTipoUsuario());
+                        calificacionDTO.setUsuario(usuarioDTO);
+                        
+                        // No incluimos la propiedad para evitar referencias circulares
+                        
+                        calificacionesDTO.add(calificacionDTO);
+                        
+                        // Acumular para el promedio
+                        sumaPuntuaciones += calificacion.getPuntuacion();
+                        contador++;
+                    }
+                }
+                
+                dto.setCalificaciones(calificacionesDTO);
+                
+                // Calcular promedio
+                if (contador > 0) {
+                    dto.setCalificacionPromedio(sumaPuntuaciones / contador);
+                } else {
+                    dto.setCalificacionPromedio(0.0);
+                }
+            } else {
+                dto.setCalificacionPromedio(0.0);
+            }
+            
+            propiedadDTOs.add(dto);
+        }
+
+        return propiedadDTOs;
     }
 
     @Transactional(readOnly = true)
