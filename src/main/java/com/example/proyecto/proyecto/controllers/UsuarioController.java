@@ -19,9 +19,11 @@ import com.example.proyecto.proyecto.dto.output.usuario.UsuarioDTO;
 import com.example.proyecto.proyecto.dto.output.usuario.UsuarioDetailDTO;
 import com.example.proyecto.proyecto.entities.Usuario.TipoUsuario;
 import com.example.proyecto.proyecto.services.UsuarioService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class UsuarioController {
 
     @Autowired

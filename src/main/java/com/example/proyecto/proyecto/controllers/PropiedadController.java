@@ -20,9 +20,11 @@ import com.example.proyecto.proyecto.dto.output.propiedad.PropiedadDTO;
 import com.example.proyecto.proyecto.dto.output.propiedad.PropiedadDetailDTO;
 import com.example.proyecto.proyecto.dto.output.propiedad.PropiedadSimpleDTO;
 import com.example.proyecto.proyecto.services.PropiedadService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/propiedades")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class PropiedadController {
 
     @Autowired

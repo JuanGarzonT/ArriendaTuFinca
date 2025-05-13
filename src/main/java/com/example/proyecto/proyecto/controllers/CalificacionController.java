@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +19,13 @@ import com.example.proyecto.proyecto.dto.input.calificacion.CalificacionUpdateDT
 import com.example.proyecto.proyecto.dto.output.calificacion.CalificacionDTO;
 import com.example.proyecto.proyecto.entities.Calificacion.TipoCalificacion;
 import com.example.proyecto.proyecto.services.CalificacionService;
+import org.springframework.web.bind.annotation.*;
+
+
 
 @RestController
 @RequestMapping("/api/calificaciones")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class CalificacionController {
 
     @Autowired

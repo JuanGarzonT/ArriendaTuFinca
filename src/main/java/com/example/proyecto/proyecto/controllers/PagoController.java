@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +21,11 @@ import com.example.proyecto.proyecto.dto.input.pago.PagoUpdateDTO;
 import com.example.proyecto.proyecto.dto.output.pago.PagoDTO;
 import com.example.proyecto.proyecto.entities.Pago.EstadoPago;
 import com.example.proyecto.proyecto.services.PagoService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/pagos")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class PagoController {
 
     @Autowired

@@ -19,15 +19,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.CrossOrigin;
-=======
 import java.util.ArrayList;
->>>>>>> 7a94b0fb2251b5d3af266fa141ad9e3aa614731d
 
 import java.util.List;
 import java.util.stream.Collectors;
-@CrossOrigin("*")
 
 @Service
 public class PropiedadService {
