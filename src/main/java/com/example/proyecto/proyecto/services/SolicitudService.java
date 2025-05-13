@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 @CrossOrigin("*")
@@ -58,21 +59,74 @@ public class SolicitudService {
     public List<SolicitudSimpleDTO> getSolicitudesByArrendadorId(Long arrendadorId) {
         Usuario arrendador = usuarioRepository.findById(arrendadorId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + arrendadorId));
-
-        return solicitudRepository.findByArrendadorAndActivoTrue(arrendador).stream()
-                .map(solicitud -> modelMapper.map(solicitud, SolicitudSimpleDTO.class))
-                .collect(Collectors.toList());
+    
+        List<Solicitud> solicitudes = solicitudRepository.findByArrendadorAndActivoTrue(arrendador);
+        List<SolicitudSimpleDTO> solicitudDTOs = new ArrayList<>();
+    
+        for (Solicitud solicitud : solicitudes) {
+            SolicitudSimpleDTO dto = new SolicitudSimpleDTO();
+            
+            // Mapeo manual de propiedades simples
+            dto.setId(solicitud.getId());
+            dto.setFechaInicio(solicitud.getFechaInicio());
+            dto.setFechaFin(solicitud.getFechaFin());
+            dto.setEstado(solicitud.getEstado());
+            
+            // Mapeo manual de propiedades de objetos relacionados
+            if (solicitud.getPropiedad() != null) {
+                dto.setPropiedadNombre(solicitud.getPropiedad().getNombre());
+            }
+            
+            if (solicitud.getArrendador() != null) {
+                dto.setArrendadorNombre(solicitud.getArrendador().getNombre());
+            }
+            
+            if (solicitud.getArrendatario() != null) {
+                dto.setArrendatarioNombre(solicitud.getArrendatario().getNombre());
+            }
+            
+            solicitudDTOs.add(dto);
+        }
+    
+        return solicitudDTOs;
     }
+    
 
-    @Transactional(readOnly = true)
-    public List<SolicitudSimpleDTO> getSolicitudesByArrendatarioId(Long arrendatarioId) {
+        @Transactional(readOnly = true)
+        public List<SolicitudSimpleDTO> getSolicitudesByArrendatarioId(Long arrendatarioId) {
         Usuario arrendatario = usuarioRepository.findById(arrendatarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + arrendatarioId));
 
-        return solicitudRepository.findByArrendatarioAndActivoTrue(arrendatario).stream()
-                .map(solicitud -> modelMapper.map(solicitud, SolicitudSimpleDTO.class))
-                .collect(Collectors.toList());
-    }
+        List<Solicitud> solicitudes = solicitudRepository.findByArrendatarioAndActivoTrue(arrendatario);
+        List<SolicitudSimpleDTO> solicitudDTOs = new ArrayList<>();
+
+        for (Solicitud solicitud : solicitudes) {
+                SolicitudSimpleDTO dto = new SolicitudSimpleDTO();
+                
+                // Mapeo manual de propiedades simples
+                dto.setId(solicitud.getId());
+                dto.setFechaInicio(solicitud.getFechaInicio());
+                dto.setFechaFin(solicitud.getFechaFin());
+                dto.setEstado(solicitud.getEstado());
+                
+                // Mapeo manual de propiedades de objetos relacionados
+                if (solicitud.getPropiedad() != null) {
+                dto.setPropiedadNombre(solicitud.getPropiedad().getNombre());
+                }
+                
+                if (solicitud.getArrendador() != null) {
+                dto.setArrendadorNombre(solicitud.getArrendador().getNombre());
+                }
+                
+                if (solicitud.getArrendatario() != null) {
+                dto.setArrendatarioNombre(solicitud.getArrendatario().getNombre());
+                }
+                
+                solicitudDTOs.add(dto);
+        }
+
+        return solicitudDTOs;
+        }
 
     @Transactional(readOnly = true)
     public List<SolicitudSimpleDTO> getSolicitudesByPropiedadId(Long propiedadId) {
