@@ -59,13 +59,8 @@ public class SecurityConfig {
         return new OrRequestMatcher(
             // Endpoints de autenticación
             new AntPathRequestMatcher("/api/auth/**"),
-            // Swagger / OpenAPI
-            new AntPathRequestMatcher("/v3/api-docs/**"),
-            new AntPathRequestMatcher("/swagger-ui/**"),
-            new AntPathRequestMatcher("/swagger-ui.html"),
             // Endpoints públicos específicos
             new AntPathRequestMatcher("/api/usuarios/registrar", HttpMethod.POST.name()),
-            // Agregar más endpoints públicos según sea necesario
             new AntPathRequestMatcher("/api/calificaciones/promedioPorPropiedad/**", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/api/propiedades/listar", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/api/propiedades/buscar/**", HttpMethod.GET.name())
