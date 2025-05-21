@@ -15,8 +15,10 @@ import com.example.proyecto.proyecto.dto.output.solicitud.SolicitudSimpleDTO;
 import com.example.proyecto.proyecto.entities.Solicitud.EstadoSolicitud;
 import com.example.proyecto.proyecto.services.SolicitudService;
 
+
 @RestController
 @RequestMapping("/api/solicitudes")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class SolicitudController {
 
     @Autowired
