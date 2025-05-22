@@ -16,7 +16,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.example.proyecto.proyecto.filter.JWTAuthorizationFilter;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -38,6 +43,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            // Configurar CORS
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             // Deshabilitar CSRF para APIs REST
             .csrf(csrf -> csrf.disable())
             // Establecer política de sesión sin estado (stateless)
@@ -55,6 +62,21 @@ public class SecurityConfig {
         return http.build();
     }
     
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "X-Requested-With"));
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(Arrays.asList("X-Usuario-Id", "X-Usuario-Nombre", "X-Usuario-Tipo"));
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+    
     private RequestMatcher permitAllRequestMatcher() {
         return new OrRequestMatcher(
             // Endpoints de autenticación
@@ -63,7 +85,8 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/api/usuarios/registrar", HttpMethod.POST.name()),
             new AntPathRequestMatcher("/api/calificaciones/promedioPorPropiedad/**", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/api/propiedades/listar", HttpMethod.GET.name()),
-            new AntPathRequestMatcher("/api/propiedades/buscar/**", HttpMethod.GET.name())
+            new AntPathRequestMatcher("/api/propiedades/buscar/**", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/api/propiedades/buscarPorArrendatario/**", HttpMethod.GET.name())
         );
     }
 }
