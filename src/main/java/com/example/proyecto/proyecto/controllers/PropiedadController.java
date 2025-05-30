@@ -52,6 +52,7 @@ public class PropiedadController {
         return propiedadService.getPropiedadesByArrendatarioId(arrendatarioId);
     }
 
+   @CrossOrigin 
     @GetMapping("/listarDisponibles")
     public List<PropiedadSimpleDTO> getPropiedadesDisponibles() {
         return propiedadService.getPropiedadesByDisponibilidad(true);
