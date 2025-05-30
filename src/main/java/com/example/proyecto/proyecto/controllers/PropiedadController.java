@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/propiedades")
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class PropiedadController {
 
     @Autowired
@@ -52,7 +52,6 @@ public class PropiedadController {
         return propiedadService.getPropiedadesByArrendatarioId(arrendatarioId);
     }
 
-   @CrossOrigin 
     @GetMapping("/listarDisponibles")
     public List<PropiedadSimpleDTO> getPropiedadesDisponibles() {
         return propiedadService.getPropiedadesByDisponibilidad(true);

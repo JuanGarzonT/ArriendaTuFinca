@@ -18,7 +18,7 @@ import com.example.proyecto.proyecto.services.SolicitudService;
 
 @RestController
 @RequestMapping("/api/solicitudes")
-@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+//@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class SolicitudController {
 
     @Autowired
