@@ -41,9 +41,16 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             @NonNull HttpServletRequest request, 
             @NonNull HttpServletResponse response, 
             @NonNull FilterChain chain) throws ServletException, IOException {
-        
+
         System.out.println("JWTAuthorizationFilter: Procesando solicitud a " + request.getRequestURI());
-        
+
+        // Rutas públicas que deben ignorarse en el filtro
+        String path = request.getRequestURI();
+        if (path.equals("/api/usuarios/registrar") || path.startsWith("/api/auth")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         try {
             if (existeJWTToken(request)) {
                 System.out.println("Token JWT encontrado en la solicitud");
@@ -66,13 +73,14 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.clearContext();
             }
             chain.doFilter(request, response);
-            
+
         } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException e) {
             System.out.println("Error al validar el token: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("Token inválido: " + e.getMessage());
         }
     }
+
     
     private Claims validarToken(HttpServletRequest request) {
         String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
