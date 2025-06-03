@@ -86,7 +86,8 @@ public class SecurityConfig {
             new AntPathRequestMatcher("/api/calificaciones/promedioPorPropiedad/**", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/api/propiedades/listar", HttpMethod.GET.name()),
             new AntPathRequestMatcher("/api/propiedades/buscar/**", HttpMethod.GET.name()),
-            new AntPathRequestMatcher("/api/propiedades/buscarPorArrendatario/**", HttpMethod.GET.name())
+            new AntPathRequestMatcher("/api/propiedades/buscarPorArrendatario/**", HttpMethod.GET.name()),
+            new AntPathRequestMatcher("/api/pagos/registrar",HttpMethod.POST.name())
         );
     }
 }

@@ -35,7 +35,8 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     // Rutas públicas que no deben pasar por el filtro JWT
     private static final List<String> EXCLUDE_URLS = Arrays.asList(
         "/api/usuarios/registrar",
-        "/api/auth/login"
+        "/api/auth/login",
+        "/api/pagos/registrar"
     );
 
     @Autowired
