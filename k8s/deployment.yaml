@@ -34,11 +34,11 @@ metadata:
   name: proyecto
   namespace: 
 spec:
-  type: NodePort
+  #type: NodePort
   selector:
     app: proyecto
   ports:
     - protocol: TCP
       port: 8082
       targetPort: 8082
-      nodePort: 30001
+      #nodePort: 30001
