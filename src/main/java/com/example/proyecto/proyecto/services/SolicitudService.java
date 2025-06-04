@@ -193,7 +193,7 @@ public class SolicitudService {
         solicitud.setEstado(EstadoSolicitud.PENDIENTE);
         solicitud.setActivo(true);
 
-        long dias = ChronoUnit.DAYS.between(createSolicitudDTO.getFechaInicio(), createSolicitudDTO.getFechaFin()) + 1;
+        long dias = ChronoUnit.DAYS.between(createSolicitudDTO.getFechaInicio(), createSolicitudDTO.getFechaFin());
         BigDecimal montoTotal = propiedad.getPrecioPorDia().multiply(BigDecimal.valueOf(dias));
         solicitud.setMontoTotal(montoTotal);
 
